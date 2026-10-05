@@ -5,7 +5,7 @@ description: MKV 영상의 자막을 한글화한다. 영어 자막(내장 또�
 
 # MKV 자막 한글화
 
-요구: mkvtoolnix(mkvmerge/mkvextract), ffmpeg. 스크립트: `~/.claude/skills/mkv-ko-subs/scripts/mkv_subs.py`
+요구: mkvtoolnix(mkvmerge/mkvextract), ffmpeg, python3 (모두 PATH에 있어야 함). 스크립트: `~/.claude/skills/mkv-ko-subs/scripts/mkv_subs.py` (Windows는 `%USERPROFILE%\.claude\skills\mkv-ko-subs\scripts\mkv_subs.py`, 명령어는 `python3` 대신 `python` 또는 `py`)
 
 ## 절대 규칙
 1. **이 문서에 적힌 대로만 진행한다. 임의로 판단하거나 규칙을 바꾸지 않는다.**

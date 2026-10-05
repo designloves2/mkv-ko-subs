@@ -15,6 +15,13 @@ KO_TAGS = {"kor", "ko", "korean", "kr", "kor-kr", "한국어", "한글"}
 CODEC_EXT = {"S_TEXT/ASS": ".ass", "S_TEXT/SSA": ".ssa", "S_TEXT/UTF8": ".srt", "S_TEXT/WEBVTT": ".vtt"}
 DEFAULT_WORK = os.path.join(tempfile.gettempdir(), "mkv-ko-subs")
 
+# Windows 콘솔(cp949 등)에서도 한글이 깨지거나 오류 나지 않도록 UTF-8 고정
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 
 def die(msg, code=2):
     print(msg)
@@ -22,7 +29,7 @@ def die(msg, code=2):
 
 
 def run(cmd, ok=(0,)):
-    r = subprocess.run(cmd, capture_output=True, text=True)
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if r.returncode not in ok:
         die(f"실패: {' '.join(cmd)}\n{r.stdout}\n{r.stderr}")
     return r
@@ -107,7 +114,7 @@ def sub_to_srt_cues(path):
         src = os.path.join(d, "in" + ext)
         open(src, "w", encoding="utf-8").write(read_text(path))
         dst = os.path.join(d, "out.srt")
-        subprocess.run(["ffmpeg", "-v", "quiet", "-y", "-i", src, dst], capture_output=True, text=True)
+        subprocess.run(["ffmpeg", "-v", "quiet", "-y", "-i", src, dst], capture_output=True, text=True, encoding="utf-8", errors="replace")
         if not os.path.exists(dst):
             die(f"자막 변환 실패: {path}")
         return parse_srt(open(dst, encoding="utf-8").read())
